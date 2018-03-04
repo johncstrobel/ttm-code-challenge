@@ -8,6 +8,8 @@ import java.util.*;
 public class maze {
     private int xlen;
     private int ylen;
+    private char[][] grid;
+
     public String toString(){
         String returnString = "";
         for(int i = 0;i<this.grid.length;i++){//traverse rows
@@ -18,15 +20,11 @@ public class maze {
         }//for
         return returnString;
     }//printmaze
-
-    private char[][] grid;
-
     public maze(int x, int y){
         xlen = x;
         ylen = y;
         grid = new char[x][y];
     }//constructor
-
     public maze(){
         xlen = 0;
         ylen = 0;
@@ -41,11 +39,9 @@ public class maze {
     public boolean inBounds(coordinate c){
         return c.getx()>=0 && c.getx()<xlen && c.gety()>=0 &&c.gety()<ylen;
     }
-
     public void changeCoord(coordinate c, char x){
         grid[c.getx()][c.gety()] = x;
     }
-
     public coordinate[] getwalls(){
         //finds all walls ('#') and returns their locations in an array of coordinates.
         //used to eliminate all walls from consideration before the BFS algorithm starts.
@@ -62,8 +58,9 @@ public class maze {
         }//for i
         return returncoord;
     }//getwalls
-
     public coordinate[] bfs(coordinate start,coordinate dest){
+        //finds the fastest path. Does not alter the maze.
+
         //"to view" queue
         LinkedList <coordinate> Q = new LinkedList<coordinate>();
 
@@ -125,22 +122,19 @@ public class maze {
 
         return solutions;
     }//bfs
+    public void setGrid(String [] s) throws IllegalArgumentException{
+        int len = s[0].length();
+        char[][] chars = new char[s.length][s[0].length()];
+        for(int i = 0;i<s.length;i++){
+            if(s[i].length() != len){
+                throw new IllegalArgumentException("Array entered has bad coordinates");
+            }//if
+            chars[i] = s[i].toCharArray();
+        }//for i
 
-    public void setGrid (String arr) throws IllegalArgumentException{
-        //case 1: newlines are present in the string
-        String[] stringList = arr.split("\n");
-        char[][] charList = new char[stringList.length][];
-        for(int i = 0; i < stringList.length; i++){
-            charList[i] =  stringList[i].toCharArray();
-        }
+        setGrid(chars);
 
-        this.setGrid(charList);
-
-
-        ///something something something
-
-    }//setGrid (string)
-
+    }//setGrid(String[] s)
     public void setGrid(char[][] arr) throws IllegalArgumentException{
         if(arr.length != xlen || arr[0].length != ylen ) {//assuming square arrays
             throw new IllegalArgumentException("Array entered has bad coordinates");
@@ -156,5 +150,33 @@ public class maze {
             throw new IllegalArgumentException("Array entered has bad coordinates");
         }//catch
     }//setGrid(char array)
+    public void getSolution(coordinate[] c){
+        for(int i = 0;i<c.length;i++){
+            this.changeCoord(c[i],'@');
+        }//for
+    }//getSolution
+    public coordinate findStart(){
+        coordinate start = null;
+        for(int i = 0;i<xlen;i++){
+            for(int j = 0;j<ylen;j++){
+                if(grid[i][j] == 'A'){
+                    start = new coordinate(i,j);
+                }
+            }//for j
+        }//for i
+        return start;
+    }//findStart
+
+    public coordinate findEnd(){
+        coordinate end = null;
+        for(int i = 0;i<xlen;i++){
+            for(int j = 0;j<ylen;j++){
+                if(grid[i][j] == 'B'){
+                    end = new coordinate(i,j);
+                }//if
+            }//for j
+        }//for i
+        return end;
+    }//findEnd
 
 }//maze
