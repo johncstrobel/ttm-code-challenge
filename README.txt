@@ -12,3 +12,15 @@ The directory 'src' contains all the source code, in java files. There are three
 	Coordinates are objects representing specific points. Included in their definition is a "parent," useful for backtracking and identifying the actual path once the algorithm has completed iterating.
 3. MAZE_SOLUTION
 	Main. Includes File I/O.
+	
+	
+	
+
+
+Hello! I'm adding this after the fact, just for the record.
+
+This code was created for an interview.
+
+The purpose of the project was to find a way through a maze. It is still relatively incomplete. 
+
+This was last run on ubuntu in 2018, so I'm not sure if it will still be compatible with current operating systems.
